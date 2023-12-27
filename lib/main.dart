@@ -59,8 +59,9 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
+//class to manage theme of app
 class ThemeService extends GetxController {
+
   var theme = ThemeMode.system.obs;
 
   void toggleTheme() {
