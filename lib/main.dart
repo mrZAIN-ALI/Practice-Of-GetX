@@ -60,21 +60,21 @@ class HomePage extends StatelessWidget {
   }
 }
 //class to manage theme of app
-class ThemeService extends GetxController {
+// class ThemeService extends GetxController {
 
-  var theme = ThemeMode.system.obs;
+//   var theme = ThemeMode.system.obs;
 
-  void toggleTheme() {
-    if (theme.value == ThemeMode.light) {
-      theme.value = ThemeMode.dark;
-    } else if (theme.value == ThemeMode.dark) {
-      theme.value = ThemeMode.system;
-    } else {
-      theme.value = ThemeMode.light;
-    }
+//   void toggleTheme() {
+//     if (theme.value == ThemeMode.light) {
+//       theme.value = ThemeMode.dark;
+//     } else if (theme.value == ThemeMode.dark) {
+//       theme.value = ThemeMode.system;
+//     } else {
+//       theme.value = ThemeMode.light;
+//     }
 
-    Get.changeThemeMode(theme.value);
-    update();
-    print(theme.value);
-  }
-}
+//     Get.changeThemeMode(theme.value);
+//     update();
+//     print(theme.value);
+//   }
+// }
