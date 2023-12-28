@@ -1,3 +1,4 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,76 +6,98 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Getx Bottom Sheet and Dynamic Theme',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeService().theme.value,
-      home: HomePage(),
-    );
+class AppController extends GetxController {
+  var currentIndex = 0.obs;
+
+  void changePage(int index) {
+    currentIndex.value = index;
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bottom Sheet Example'),
+        title: Text('Home Screen'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Get.bottomSheet(
-              Container(
-                height: 200.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Bottom Sheet Content'),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child: Text('Close'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-          child: Text('Show Bottom Sheet'),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ThemeService().toggleTheme();
-        },
-        child: Icon(Icons.lightbulb_outline),
+        child: Text('Home Screen'),
       ),
     );
   }
 }
-//class to manage theme of app
-// class ThemeService extends GetxController {
 
-//   var theme = ThemeMode.system.obs;
+class ProfileScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile Screen'),
+      ),
+      body: Center(
+        child: Text('Profile Screen'),
+      ),
+    );
+  }
+}
 
-//   void toggleTheme() {
-//     if (theme.value == ThemeMode.light) {
-//       theme.value = ThemeMode.dark;
-//     } else if (theme.value == ThemeMode.dark) {
-//       theme.value = ThemeMode.system;
-//     } else {
-//       theme.value = ThemeMode.light;
-//     }
+class SettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings Screen'),
+      ),
+      body: Center(
+        child: Text('Settings Screen'),
+      ),
+    );
+  }
+}
 
-//     Get.changeThemeMode(theme.value);
-//     update();
-//     print(theme.value);
-//   }
-// }
+class MyApp extends StatelessWidget {
+  final AppController appController = Get.put(AppController());
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter GetX Navigation',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        body: Obx(() {
+          switch (appController.currentIndex.value) {
+            case 0:
+              return HomeScreen();
+            case 1:
+              return ProfileScreen();
+            case 2:
+              return SettingsScreen();
+            default:
+              return HomeScreen();
+          }
+        }),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: appController.currentIndex.value,
+          onTap: appController.changePage,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
