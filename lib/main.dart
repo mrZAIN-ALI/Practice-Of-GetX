@@ -1,4 +1,5 @@
 // main.dart
+//this depicts use of Route navifatrion using getx
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
