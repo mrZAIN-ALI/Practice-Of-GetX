@@ -1,5 +1,4 @@
 // main.dart
-//this depicts use of Route navifatrion using getx
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,11 +6,23 @@ void main() {
   runApp(MyApp());
 }
 
-class AppController extends GetxController {
-  var currentIndex = 0.obs;
-
-  void changePage(int index) {
-    currentIndex.value = index;
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'GetX Named Routes Example',
+      initialRoute: '/',
+      getPages: [
+        GetPage(
+          name: '/', // Root route
+          page: () => HomeScreen(),
+        ),
+        GetPage(
+          name: '/details', // Named route for DetailsScreen
+          page: () => DetailsScreen(),
+        ),
+      ],
+    );
   }
 }
 
@@ -23,80 +34,32 @@ class HomeScreen extends StatelessWidget {
         title: Text('Home Screen'),
       ),
       body: Center(
-        child: Text('Home Screen'),
+        child: ElevatedButton(
+          onPressed: () {
+            // Navigate to the named route '/details'
+            Get.toNamed('/details');
+          },
+          child: Text('Go to Details Screen'),
+        ),
       ),
     );
   }
 }
 
-class ProfileScreen extends StatelessWidget {
+class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile Screen'),
+        title: Text('Details Screen'),
       ),
       body: Center(
-        child: Text('Profile Screen'),
-      ),
-    );
-  }
-}
-
-class SettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings Screen'),
-      ),
-      body: Center(
-        child: Text('Settings Screen'),
-      ),
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  final AppController appController = Get.put(AppController());
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter GetX Navigation',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        body: Obx(() {
-          switch (appController.currentIndex.value) {
-            case 0:
-              return HomeScreen();
-            case 1:
-              return ProfileScreen();
-            case 2:
-              return SettingsScreen();
-            default:
-              return HomeScreen();
-          }
-        }),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: appController.currentIndex.value,
-          onTap: appController.changePage,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
+        child: ElevatedButton(
+          onPressed: () {
+            // Navigate back to the root route '/'
+            Get.offNamed('/');
+          },
+          child: Text('Go back to Home Screen'),
         ),
       ),
     );

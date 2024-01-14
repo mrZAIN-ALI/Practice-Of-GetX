@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class CounterController extends GetxController {
@@ -18,12 +18,14 @@ class CounterController extends GetxController {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('GetX Counter App'),
+          title: const Text('GetX Counter App'),
         ),
         body: Center(
           child: Column(
@@ -34,11 +36,11 @@ class MyApp extends StatelessWidget {
                 builder: (controller) {
                   return Text(
                     'Count: ${controller.counter}',
-                    style: TextStyle(fontSize: 24),
+                    style: const TextStyle(fontSize: 24),
                   );
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -46,14 +48,14 @@ class MyApp extends StatelessWidget {
                     onPressed: () {
                       Get.find<CounterController>().increment();
                     },
-                    child: Text('Increment'),
+                    child: const Text('Increment'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () {
                       Get.find<CounterController>().decrement();
                     },
-                    child: Text('Decrement'),
+                    child: const Text('Decrement'),
                   ),
                 ],
               ),

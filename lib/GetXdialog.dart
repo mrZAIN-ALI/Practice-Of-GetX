@@ -2,24 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return  GetMaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
+      ),
       home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GetX Dialog Example'),
+        title: const Text('GetX Dialog Example'),
       ),
       body: Center(
         child: ElevatedButton(
@@ -27,7 +35,7 @@ class HomePage extends StatelessWidget {
             // Call the showDialog function defined below
             showMyDialog();
           },
-          child: Text('Show Dialog'),
+          child: const Text('Show Dialog'),
         ),
       ),
     );
@@ -35,17 +43,31 @@ class HomePage extends StatelessWidget {
 
   void showMyDialog() {
     Get.defaultDialog(
+      //
       title: 'Dialog Title',
+      textCancel: "Cancel",
+      textConfirm: "Confirm",
+      onCancel: () {
+        print("Cancel");
+      },
+      onConfirm: () {
+        print("Confirm");
+      },
+      buttonColor: Colors.green,
+      // confirmTextColor: Color(colors),
+      
+      //
       content: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('This is a GetX dialog.'),
-          SizedBox(height: 10),
+          const Text('This is a GetX dialog.'),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               // Close the dialog when this button is pressed
               Get.back();
             },
-            child: Text('Close Dialog'),
+            child: const Text('Close Dialog'),
           ),
         ],
       ),

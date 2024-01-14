@@ -5,57 +5,54 @@ void main() {
   runApp(MyApp());
 }
 
-class CounterController extends GetxController {
-  var counter = 0.obs;
-
-  void increment() {
-    counter++;
-  }
-
-  void decrement() {
-    counter--;
+class MyController extends GetxController {
+  // RxBool to make the variable reactive
+  RxBool isSwitchOn = false.obs;
+  // RxString name = 'John Doe'.obs;
+  // Function to toggle the value of isSwitchOn
+  void toggleSwitch() {
+    isSwitchOn.value = !isSwitchOn.value;
   }
 }
 
 class MyApp extends StatelessWidget {
+  final MyController controller = MyController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
+      ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('GetX Counter App'),
+          title: Text('Reactive Variable Example'),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GetBuilder<CounterController>(
-                init: CounterController(),
-                builder: (controller) {
-                  return Text(
-                    'Count: ${controller.counter}',
-                    style: TextStyle(fontSize: 24),
-                  );
-                },
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.find<CounterController>().increment();
-                    },
-                    child: Text('Increment'),
-                  ),
-                  SizedBox(width: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.find<CounterController>().decrement();
-                    },
-                    child: Text('Decrement'),
-                  ),
-                ],
+              // Obx widget to make the Text reactive
+              Obx(() {
+                return Text(
+                  'Switch is ${controller.isSwitchOn.value ? 'ON' : 'OFF'}',
+                  style: TextStyle(fontSize: 20),
+                );
+              }),
+
+              SizedBox(height: 20),
+
+              // Switch to toggle the reactive variable
+              Obx(
+                () => Switch(
+                  activeColor: Colors.green,
+                  value: controller.isSwitchOn.value,
+                  onChanged: (value) {
+                    // Call the function to toggle the value
+                    controller.toggleSwitch();
+                  },
+                ),
               ),
             ],
           ),
@@ -64,4 +61,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-//why so lazy

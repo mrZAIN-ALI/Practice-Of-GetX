@@ -1,3 +1,4 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,72 +10,83 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Getx Bottom Sheet and Dynamic Theme',
+      title: 'GetX Bottom Sheet and Dynamic Theme',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode: ThemeService().theme.value,
-      home: HomePage(),
+      themeMode: ThemeService().getThemeMode(),
+      home: HomeScreen(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bottom Sheet Example'),
+        title: Text('GetX Bottom Sheet and Dynamic Theme'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Get.bottomSheet(
-              Container(
-                height: 200.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Bottom Sheet Content'),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child: Text('Close'),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            Get.bottomSheet(ThemeBottomSheet());
           },
           child: Text('Show Bottom Sheet'),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ThemeService().toggleTheme();
-        },
-        child: Icon(Icons.lightbulb_outline),
+    );
+  }
+}
+
+class ThemeBottomSheet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Select Theme:'),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              ThemeService().setTheme(ThemeMode.light);
+              Get.back();
+            },
+            child: Text('Light Theme'),
+          ),
+          SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () {
+              ThemeService().setTheme(ThemeMode.dark);
+              Get.back();
+            },
+            child: Text('Dark Theme'),
+            
+          ),
+          SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () {
+              ThemeService().setTheme(ThemeMode.system);
+              Get.back();
+            },
+            child: Text('System Theme'),
+          ),
+        ],
       ),
     );
   }
 }
-//class to manage theme of app
-class ThemeService extends GetxController {
 
-  var theme = ThemeMode.system.obs;
+class ThemeService extends GetxService {
+  //default theme
+  Rx<ThemeMode> themeMode = ThemeMode.system.obs;
 
-  void toggleTheme() {
-    if (theme.value == ThemeMode.light) {
-      theme.value = ThemeMode.dark;
-    } else if (theme.value == ThemeMode.dark) {
-      theme.value = ThemeMode.system;
-    } else {
-      theme.value = ThemeMode.light;
-    }
-
-    Get.changeThemeMode(theme.value);
-    update();
-    print(theme.value);
+  //setting theme
+  void setTheme(ThemeMode mode) {
+    themeMode.value = mode;
+    Get.changeThemeMode(mode);
   }
+  //getting theme
+  ThemeMode getThemeMode() => themeMode.value;
 }
